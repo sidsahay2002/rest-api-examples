@@ -21,16 +21,19 @@ class UserProfileManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, name, password):
-        """Create a superuser with given details"""
+        """Create and save a new superuser with given details"""
         user = self.create_user(email, name, password)
 
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
 
+        return user
+
+
 class UserProfile(AbstractBaseUser, PermissionsMixin):
-    """Database models for users in the system"""
-    email = models.EmailField(max_length=225, unique=True)
+    """Database model for users in the system"""
+    email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -38,16 +41,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FEILD = ['name']
+    REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
-        """Retrieve full name of user"""
+        """Retrieve full name for user"""
         return self.name
 
     def get_short_name(self):
-        """Retrieve the short name of the user"""
+        """Retrieve short name of user"""
         return self.name
 
     def __str__(self):
-        """Return string representation of the user"""
+        """Return string representation of user"""
         return self.email
