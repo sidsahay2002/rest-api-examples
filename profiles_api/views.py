@@ -15,7 +15,6 @@ class HelloApiView(APIView):
             'Is mapped manually to URLs',
         ]
         name = self.request.query_params.get('name')
-        num1 = self.request.query_params.get('num1')
 
         """return Response({'message': 'Hello!', 'an_apiview': an_apiview, 'Name': name})"""
-        return Response({"my name is ": name, "The number is":num1})
+        return Response("my name is " + name)
